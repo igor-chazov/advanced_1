@@ -1,15 +1,35 @@
 import orderByProps, { obj } from '../app';
 
-test('должна правильно сортировать объект', () => {
-  const received = [
+test('должна сортировать объект', () => {
+  const expected = [
     { key: 'name', value: 'мечник' },
     { key: 'level', value: 2 },
     { key: 'attack', value: 80 },
     { key: 'defence', value: 40 },
     { key: 'health', value: 10 },
   ];
-  const expected = orderByProps(obj, ['name', 'level']);
+  const received = orderByProps(obj, ['name', 'level']);
   expect(received).toEqual(expected);
+});
+
+test('должна преобразовать массив объектов в объект', () => {
+  const received = [
+    { key: 'name', value: 'мечник' },
+    { key: 'attack', value: 80 },
+    { key: 'health', value: 10 },
+    { key: 'level', value: 2 },
+    { key: 'defence', value: 40 },
+  ];
+
+  const expected = [
+    { key: 'name', value: 'мечник' },
+    { key: 'level', value: 2 },
+    { key: 'attack', value: 80 },
+    { key: 'defence', value: 40 },
+    { key: 'health', value: 10 },
+  ];
+
+  expect(orderByProps(received, ['name', 'level'])).toEqual(expected);
 });
 
 test('должна перебирать собственные свойства', () => {
@@ -17,10 +37,8 @@ test('должна перебирать собственные свойства'
     apple: 1,
     banana: 2,
   };
-  const test1 = {};
-  Object.setPrototypeOf(test1, test);
-
-  const received = [];
-  const expected = orderByProps(test1, ['name', 'level']);
-  expect(received).toEqual(expected);
+  const received = {};
+  Object.setPrototypeOf(received, test);
+  const expected = [];
+  expect(orderByProps(received, ['name', 'level'])).toEqual(expected);
 });
